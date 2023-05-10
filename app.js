@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
 import postsRouter from './routes/posts.js';
 import reviewsRouter from './routes/reviews.js';
 
@@ -26,7 +25,6 @@ app.use(cookieParser());
 app.use(expressStatic(join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
 app.use('/posts/:id/reviews', reviewsRouter);
 
