@@ -1,3 +1,5 @@
+import passport from 'passport';
+
 import User from '../models/user.js';
 
 export const postRegister = async (req, res, next) => {
@@ -13,15 +15,20 @@ export const postRegister = async (req, res, next) => {
 	res.redirect('/');
 };
 
+export const postLogin = (req, res, next) => {
+	passport.authenticate('local', {
+		successRedirect: '/',
+		failureRedirect: '/login'
+	})(req, res, next);
+};
+
 export const getLogout = async (req, res, next) => {
 	await req.logout(function(err) {
 		if (err) {
-			// Handle error
 			console.error(err);
 			return res.status(500).send('Error occurred during logout');
 		}
 
-		// Logout successful
 		res.redirect('/');
 	});
 };

@@ -4,7 +4,7 @@ import passport from 'passport';
 const router = Router({ mergeParams: true });
 
 // controllers
-import { postRegister, getLogout } from '../controllers/index.js';
+import { postRegister, postLogin, getLogout } from '../controllers/index.js';
 
 // middlewares
 import { errorHandler } from '../middlewares/index.js';
@@ -24,13 +24,7 @@ router.get('/login', (req, res) => {
 	res.send('login route');
 });
 
-router.post(
-	'/login',
-	passport.authenticate('local', {
-		successRedirect: '/',
-		failureRedirect: '/login'
-	})
-);
+router.post('/login', postLogin);
 
 router.get('/logout', getLogout);
 
