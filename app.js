@@ -4,12 +4,23 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import passport from 'passport';
+import session from 'express-session';
+import dotenv from 'dotenv';
 
+// Routes
 import indexRouter from './routes/index.js';
 import postsRouter from './routes/posts.js';
 import reviewsRouter from './routes/reviews.js';
 
+// Models
+import User from './models/user.js';
+
+//  db config
+import connectDB from './config/db.js';
+
 const app = express();
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -23,7 +34,24 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(expressStatic(join(__dirname, 'public')));
+app.use(
+	session({
+		secret: 'thisIsMySecret',
+		resave: false,
+		saveUninitialized: true
+	})
+);
 
+// Passport setup
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// function to initialize db
+connectDB();
+
+// Mounting Routes
 app.use('/', indexRouter);
 app.use('/posts', postsRouter);
 app.use('/posts/:id/reviews', reviewsRouter);

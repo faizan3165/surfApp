@@ -2,6 +2,9 @@ import { Router } from 'express';
 
 const router = Router({ mergeParams: true });
 
+// controllers
+import { postRegister } from '../controllers/index.js';
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
 	res.render('index', { title: 'Surf Shop' });
@@ -11,9 +14,7 @@ router.get('/register', (req, res) => {
 	res.send('register route');
 });
 
-router.post('/register', (req, res) => {
-	res.send('register route post');
-});
+router.post('/register', postRegister);
 
 router.get('/login', (req, res) => {
 	res.send('login route');
