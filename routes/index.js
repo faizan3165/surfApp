@@ -1,12 +1,13 @@
 import { Router } from 'express';
+import passport from 'passport';
 
 const router = Router({ mergeParams: true });
 
 // controllers
-import { postRegister } from '../controllers/index.js';
+import { postRegister, getLogout } from '../controllers/index.js';
 
 // middlewares
-import {errorHandler} from '../middlewares/index.js'
+import { errorHandler } from '../middlewares/index.js';
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -23,9 +24,15 @@ router.get('/login', (req, res) => {
 	res.send('login route');
 });
 
-router.post('/login', (req, res) => {
-	res.send('login route post');
-});
+router.post(
+	'/login',
+	passport.authenticate('local', {
+		successRedirect: '/',
+		failureRedirect: '/login'
+	})
+);
+
+router.get('/logout', getLogout);
 
 router.get('/forgot', (req, res) => {
 	res.send('forgot password route');

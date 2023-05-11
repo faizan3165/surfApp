@@ -12,3 +12,16 @@ export const postRegister = async (req, res, next) => {
 	await User.register(newUser, password);
 	res.redirect('/');
 };
+
+export const getLogout = async (req, res, next) => {
+	await req.logout(function(err) {
+		if (err) {
+			// Handle error
+			console.error(err);
+			return res.status(500).send('Error occurred during logout');
+		}
+
+		// Logout successful
+		res.redirect('/');
+	});
+};
