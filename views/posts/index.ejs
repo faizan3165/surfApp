@@ -1,0 +1,21 @@
+<h1>Posts Index Page</h1>
+
+<a href="/posts/new">Create New Post</a>
+<br /><br /><br />
+
+<% posts.forEach(post=> { %>
+    <div>
+        <a href="posts/<%= post.id %>">
+            <h1><%= post.title %></h1>
+        </a>
+
+        <h2>Price: <%= post.price %></h2>
+
+        <h2><%= post.location %></h2>
+
+        <div><%= post.desc %></div>
+    </div>
+    
+    <a href="/posts/<%= post.id %>">Show</a>
+    <br /><br />
+<% }); %>

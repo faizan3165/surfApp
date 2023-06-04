@@ -1,33 +1,33 @@
-import { Router } from 'express';
+import { Router } from "express";
+
+// controllers
+import {
+  getPosts,
+  newPost,
+  createPost,
+  showPost,
+  editPost,
+  updatePost,
+  deletePost,
+} from "../controllers/posts.js";
+
+// middlewares
+import { asyncErrorHandler } from "../middlewares/index.js";
 
 const router = Router();
 
-router.get('/', (req, res) => {
-	res.send('Hello from posts route');
-});
+router.get("/", asyncErrorHandler(getPosts));
 
-router.get('/new', (req, res) => {
-	res.send('Hello from new route');
-});
+router.get("/new", newPost);
 
-router.post('/', (req, res) => {
-	res.send('Hello from post route');
-});
+router.post("/", asyncErrorHandler(createPost));
 
-router.get('/:id', (req, res) => {
-	res.send('Hello from specific post route');
-});
+router.get("/:id", asyncErrorHandler(showPost));
 
-router.get('/:id/edit', (req, res) => {
-	res.send('Hello from editing specific post route');
-});
+router.get("/:id/edit", asyncErrorHandler(editPost));
 
-router.put('/:id', (req, res) => {
-	res.send('Hello from updating the post');
-});
+router.put("/:id", asyncErrorHandler(updatePost));
 
-router.delete('/:id', (req, res) => {
-	res.send('Hello from deleting a post');
-});
+router.delete("/:id", asyncErrorHandler(deletePost));
 
 export default router;
