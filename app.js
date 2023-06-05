@@ -9,6 +9,8 @@ import session from "express-session";
 import dotenv from "dotenv";
 import methodOverride from "method-override";
 
+dotenv.config();
+
 // Routes
 import indexRouter from "./routes/index.js";
 import postsRouter from "./routes/posts.js";
@@ -17,11 +19,11 @@ import reviewsRouter from "./routes/reviews.js";
 // Models
 import User from "./models/user.js";
 
-//  db config
+//  configs
 import connectDB from "./config/db.js";
+import cloudConnection from "./config/cloudinary.js";
 
 const app = express();
-dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -52,8 +54,9 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// function to initialize db
+// function to initialize configs
 connectDB();
+cloudConnection();
 
 // Mounting Routes
 app.use("/", indexRouter);

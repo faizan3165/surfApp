@@ -1,4 +1,5 @@
 import { Router } from "express";
+import multer from "multer";
 
 // controllers
 import {
@@ -15,12 +16,13 @@ import {
 import { asyncErrorHandler } from "../middlewares/index.js";
 
 const router = Router();
+const upload = multer({ dest: "uploads/" });
 
 router.get("/", asyncErrorHandler(getPosts));
 
 router.get("/new", newPost);
 
-router.post("/", asyncErrorHandler(createPost));
+router.post("/", upload.array("images", 4), asyncErrorHandler(createPost));
 
 router.get("/:id", asyncErrorHandler(showPost));
 

@@ -1,3 +1,5 @@
+import cloudinary from "cloudinary";
+
 import Post from "../models/post.js";
 
 export const getPosts = async (req, res, next) => {
@@ -10,6 +12,19 @@ export const newPost = (req, res, next) => {
 };
 
 export const createPost = async (req, res, next) => {
+  req.body.post.images = [];
+
+  for (const file of req.files) {
+    let image = await cloudinary.v2.uploader.upload(file.path, {
+      public_id: file.public_id,
+    });
+
+    req.body.post.images.push({
+      url: image.secure_url,
+      public_id: image.public_id,
+    });
+  }
+
   let newPost = await Post.create(req.body.post);
   res.redirect(`/posts/${newPost.id}`);
 };
