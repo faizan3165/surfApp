@@ -28,7 +28,7 @@ router.get("/:id", asyncErrorHandler(showPost));
 
 router.get("/:id/edit", asyncErrorHandler(editPost));
 
-router.put("/:id", asyncErrorHandler(updatePost));
+router.put("/:id", upload.array("images", 4), asyncErrorHandler(updatePost));
 
 router.delete("/:id", asyncErrorHandler(deletePost));
 

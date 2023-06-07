@@ -1,6 +1,7 @@
 <h1>Form to edit a Post</h1>
 
-<form action="/posts/<%= post.id %>?_method=PUT" method="POST">
+<form action="/posts/<%= post.id %>?_method=PUT" method="POST" id="postEditForm" enctype="multipart/form-data">
+
     <div>
         <label for="title">Title</label>
         <br>
@@ -20,7 +21,29 @@
     <div>
         <label for="location">Location</label>
         <br>
-        <input type="text" id="location" name="post[location]" placeholder="Enter location" value="<%= post.location %>">
+        <input type="text" id="location" name="post[location]" placeholder="Enter location"
+            value="<%= post.location %>">
+    </div>
+
+    <br>
+
+    <div>
+        <% post.images.forEach((img, i)=> { %>
+            <label for="image_<%= i %>">
+                <img src="<%= img.url %>" alt="Image" width="100" height="100">
+
+                <input type="checkbox" name="deleteImages[]" id="image_<%= i %>" class="deleteImages"
+                    value="<%= img.public_id %>">
+
+                <span>Delete?</span>
+            </label>
+        <% }) %>
+    </div>
+
+    <br>
+
+    <div>
+        <input type="file" accept="images/*" name="images" id="uploadedImages" multiple />
     </div>
 
     <br>
@@ -35,3 +58,27 @@
 
     <button type="submit">Update Post</button>
 </form>
+
+<script>
+    let editForm = document.getElementById("postEditForm")
+
+    editForm.addEventListener("submit", (e) => {
+        // imgs that the user is going to upload
+        let uploadedImages = document.getElementById("uploadedImages").files.length;
+
+        // imgs that have already been uploaded
+        let existingImages = document.querySelectorAll(".deleteImages").length;
+
+        // imgs that have been selected
+        let selectedImages = document.querySelectorAll(".deleteImages:checked").length;
+
+        let newTotal = (existingImages - selectedImages + uploadedImages);
+        let imgsToRemove = newTotal - 4;
+
+        if (newTotal > 4) {
+            e.preventDefault();
+            alert(`You can upload only 4 images at a time, please remove ${imgsToRemove} ${imgsToRemove === 1 ? 'image' : 'images'} and try again.`)
+        }
+    })
+
+</script>
